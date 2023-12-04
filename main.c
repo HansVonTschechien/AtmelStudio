@@ -1,7 +1,7 @@
 /*
  * jmenotohlejeono.c
  *
- * Created: 04.12.2023 13:14:50
+ * Created: 04.12.2023 13:14:47
  * Author : stepan.krousky
  */ 
 
@@ -12,13 +12,14 @@
 
 int main(void)
 {
-    DDRA = 0b00000001; // Nastavi PA0 na vystup
-    while (1) 
-    {
-		PORTA = 0b00000001; // Rozsviti LED
-		_delay_ms(1000);
-		PORTA = 0b00000000; // Vypne LED
-		_delay_ms(1000);
-    }
+	DDRA=0b11111111; // Nastavi PA0 na vystup
+	while (1)
+	{
+		// Rozsviti LED
+		PORTA=0b11111111;
+		_delay_ms(10000); // wait
+	 // Vypne LED
+		PORTA=0b00000000;
+		_delay_ms(10000);
+	}
 }
-
