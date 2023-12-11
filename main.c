@@ -12,14 +12,17 @@
 
 int main(void)
 {
-	DDRA=0b11111111; // Nastavi PA0 na vystup
+	// Nastavi PA0 na vystup
+	DDRA=0b11111111; 
 	while (1)
 	{
 		// Rozsviti LED
 		PORTA=0b11111111;
-		_delay_ms(10000); // wait
-	 // Vypne LED
+		// Pockej 1s
+		_delay_ms(1000); 
+	    // Vypne LED
 		PORTA=0b00000000;
-		_delay_ms(10000);
+		// Pockej 1s
+		_delay_ms(1000);
 	}
 }
