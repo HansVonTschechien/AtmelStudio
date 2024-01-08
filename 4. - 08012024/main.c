@@ -28,14 +28,20 @@ int main(void)
 	int cas = 0;
 	while (1)
 	{
-		DDRC=0b00000100;
-		cislo(cas%10);
-		_delay_ms(500);
-		DDRC=0b00001000;
-		cislo(cas/10);
-		_delay_ms(500);
+		for (int i = 0; i < 10; i++)
+		{
+			DDRC=0b00000100;
+			cislo(cas%10);
+			_delay_ms(25);
+			DDRC=0b00001000;
+			cislo(cas/10);
+			_delay_ms(25);
+		}
 		cas++;
-		if(cas==99) break;
+		if(cas == 100) {
+			cas = 0;
+			DDRC=0b00000000;
+		}
 	}
 }
 
