@@ -30,42 +30,27 @@ int main(void)
 	int min = 0;
 	while (1)
 	{
-		if(sec < 60) {
-			for (int i = 0; i <= 10; i++)
-			{
-				DDRC=0b00000001;
-				cislo(sec%10);
-				_delay_ms(DELAY);
-				DDRC=0b00000010;
-				cislo(sec/10);
-				_delay_ms(DELAY);
-				DDRC=0b00000100;
-				cislo(min%10);
-				_delay_ms(DELAY);
-				DDRC=0b00001000;
-				cislo(min/10);
-				_delay_ms(DELAY);
-			}
-			sec++;
-		} else {
-			sec = 0;
-			min++;
-			for (int i = 0; i <= 10; i++)
-			{
-				DDRC=0b00000100;
-				cislo(min%10);
-				_delay_ms(DELAY);
-				DDRC=0b00001000;
-				cislo(min/10);
-				_delay_ms(DELAY);
-				DDRC=0b00000001;
-				cislo(sec%10);
-				_delay_ms(DELAY);
-				DDRC=0b00000010;
-				cislo(sec/10);
-				_delay_ms(DELAY);
-			}
+		for (int i = 0; i <= 10; i++)
+		{
+			DDRC=0b00000001;
+			cislo(sec%10);
+			_delay_ms(DELAY);
+			DDRC=0b00000010;
+			cislo(sec/10);
+			_delay_ms(DELAY);
+			DDRC=0b00000100;
+			cislo(min%10);
+			_delay_ms(DELAY);
+			DDRC=0b00001000;
+			cislo(min/10);
+			_delay_ms(DELAY);
 		}
+		if (sec % 59 == 0 && sec != 0) 
+		{ 
+			sec=0;
+			min++; 
+		}
+		sec++;
 	}
 }
 
