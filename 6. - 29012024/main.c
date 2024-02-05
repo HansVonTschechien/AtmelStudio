@@ -9,7 +9,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-
 int main(void)
 {
 	DDRA=0xFF;
