@@ -34,7 +34,7 @@ int main(void)
     {
 		if (bit_is_clear(PIND, PIND7)) {
 			 while (bit_is_clear(PIND, PIND7)) {
-				 _delay_us(10);
+				 _delay_us(DELAY);
 				 DDRC=0b00000100;
 				 cislo(count%10);
 				 _delay_us(DELAY);
