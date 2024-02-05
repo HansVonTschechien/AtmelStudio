@@ -27,24 +27,30 @@ int main(void)
 	//DDRD=0b00000000;
 	PORTD=0b10000000;
 	
-	int DELAY = 5;
-	int i = 0;
+	int DELAY = 50;
+	int count = 0;
 	
     while (1) 
     {
 		if (bit_is_clear(PIND, PIND7)) {
-			_delay_us(50);
-			if (bit_is_clear(PIND, PIND7)) {
-				i++;
-			}
+			 while (bit_is_clear(PIND, PIND7)) {
+				 _delay_us(10);
+				 DDRC=0b00000100;
+				 cislo(count%10);
+				 _delay_us(DELAY);
+				DDRC=0b00001000;
+				cislo(count/10);
+				_delay_us(DELAY);
+			 }
+			 count++;
 		}
-		if (i == 100) i=0;
+		if (count == 100) count=0;
 		DDRC=0b00000100;
-		cislo(i%10);
-		_delay_ms(DELAY);
+		cislo(count%10);
+		_delay_ms(DELAY / 10);
 		DDRC=0b00001000;
-		cislo(i/10);
-		_delay_ms(DELAY);
+		cislo(count/10);
+		_delay_ms(DELAY / 10);
     };
 }
 
