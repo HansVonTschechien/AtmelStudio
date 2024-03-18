@@ -13,6 +13,7 @@
 uint8_t tis = 0;
 uint8_t des = 0;
 uint8_t sec = 0;
+uint8_t min = 0;
 
 #define c0 0b01111110;
 #define c1 0b01001000;
@@ -28,23 +29,29 @@ uint8_t sec = 0;
 int main(void)
 {
 	DDRB=0xFF;
-	DDRC|=(1<<PORTC2)|(1<<PORTC3);
+	DDRC|=(1<<PORTC0)|(1<<PORTC1)|(1<<PORTC2)|(1<<PORTC3);
 	TCCR2|=(1<<WGM21)|(1<<CS21); // prej: zapne rezim CTC na Timer2 a nastavi PS=/8
 	OCR2=125-1; // nastaveni vlastniho maxima v CTC rezimu na Timer2
 	TIMSK|=(1<<OCIE2); // zapne moznost HW preruseni v CTC na Timer2
 	sei(); // globalne vypine funkci HW preruseni
-		
+	
 	while (1)
-	{	
+	{
 		while (1)
 		{
 			for (int i = 0; i <= 10; i++)
 			{
-				DDRC=0b00001000;
+				PORTC=0b00001101;
 				cislo(sec/10);
 				_delay_ms(10);
-				DDRC=0b00000100;
+				PORTC=0b00001110;
 				cislo(sec%10);
+				_delay_ms(10);
+				PORTC=0b00000111;
+				cislo(min/10);
+				_delay_ms(10);
+				PORTC=0b00001011;
+				cislo(min%10);
 				_delay_ms(10);
 			}
 		}
@@ -62,7 +69,11 @@ ISR(TIMER2_COMP_vect) { //ISR je funkce, ktera se zavola pri HW interrupt
 		des=0;
 	}
 	if(sec==60) {
+		min++;
 		sec=0;
+	}
+	if(min==60) {
+		min=0;
 	}
 }
 
