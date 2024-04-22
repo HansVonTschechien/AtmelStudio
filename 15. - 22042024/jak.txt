@@ -1,0 +1,2 @@
+pravym na atmega 16 a open serial monitor
+pak te to navede

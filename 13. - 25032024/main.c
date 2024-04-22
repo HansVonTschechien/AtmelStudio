@@ -10,8 +10,6 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-uint8_t tis = 0;
-uint8_t des = 0;
 uint8_t sec = 0;
 uint8_t min = 0;
 
@@ -30,44 +28,33 @@ int main(void)
 {
 	DDRB=0xFF;
 	DDRC|=(1<<PORTC0)|(1<<PORTC1)|(1<<PORTC2)|(1<<PORTC3);
-	TCCR2|=(1<<WGM21)|(1<<CS21); // prej: zapne rezim CTC na Timer2 a nastavi PS=/8
-	OCR2=125-1; // nastaveni vlastniho maxima v CTC rezimu na Timer2
-	TIMSK|=(1<<OCIE2); // zapne moznost HW preruseni v CTC na Timer2
-	sei(); // globalne vypine funkci HW preruseni
+	TCCR1B|=(1<<WGM12)|(1<<CS10)|(1<<CS11);
+	OCR1A=15625-1;
+	TIMSK|=(1<<OCIE1A);
+	sei();
 	
 	while (1)
 	{
-		while (1)
+		for (int i = 0; i <= 10; i++)
 		{
-			for (int i = 0; i <= 10; i++)
-			{
-				PORTC=0b00001101;
-				cislo(sec/10);
-				_delay_ms(10);
-				PORTC=0b00001110;
-				cislo(sec%10);
-				_delay_ms(10);
-				PORTC=0b00000111;
-				cislo(min/10);
-				_delay_ms(10);
-				PORTC=0b00001011;
-				cislo(min%10);
-				_delay_ms(10);
-			}
+			PORTC=0b00001101;
+			cislo(sec/10);
+			_delay_ms(10);
+			PORTC=0b00001110;
+			cislo(sec%10);
+			_delay_ms(10);
+			PORTC=0b00000111;
+			cislo(min/10);
+			_delay_ms(10);
+			PORTC=0b00001011;
+			cislo(min%10);
+			_delay_ms(10);
 		}
 	}
 }
 
-ISR(TIMER2_COMP_vect) { //ISR je funkce, ktera se zavola pri HW interrupt
-	tis++;
-	if(tis==100) {
-		des++;
-		tis=0;
-	}
-	if(des==10) {
-		sec++;
-		des=0;
-	}
+ISR(TIMER1_COMPA_vect) {
+	sec++;
 	if(sec==60) {
 		min++;
 		sec=0;
